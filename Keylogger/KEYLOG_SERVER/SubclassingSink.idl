@@ -1,0 +1,321 @@
+//==============================================================================
+// E:\work\SubclassingThunk\1. Tlb\SubclassingSink.idl
+//
+//   Subclassing Thunk (SuperClass V2) Project
+//   Portions copyright (c) 2002 by Paul Caton <Paul_Caton@hotmail.com>
+//   Portions copyright (c) 2002 by Vlad Vissoultchev <wqweto@myrealbox.com>
+//
+//   The Subclassing Sink  interface definition
+//
+// Modifications:
+//
+// 2002-09-28    WQW     Initial implementation based on the original
+//                       iSuperClass.cls
+//
+//==============================================================================
+
+[
+  uuid(63441E51-0F47-4888-B620-88BAC83A4C1F),
+  version(1.0),
+  helpstring("Subclassing/Hooking sink interfaces 1.0")
+]
+library SubclassingSink
+{
+    importlib("stdole2.tlb");
+
+    interface ISubclassingSink;
+    interface IHookingSink;
+    
+    typedef enum {
+        WH_MSGFILTER = (-1),
+        WH_JOURNALRECORD = 0,
+        WH_JOURNALPLAYBACK = 1,
+        WH_KEYBOARD = 2,
+        WH_GETMESSAGE = 3,
+        WH_CALLWNDPROC = 4,
+        WH_CBT = 5,
+        WH_SYSMSGFILTER = 6,
+        WH_MOUSE = 7,
+        WH_HARDWARE = 8,
+        WH_DEBUG = 9,
+        WH_SHELL = 10,
+        WH_FOREGROUNDIDLE = 11,
+        WH_CALLWNDPROCRET = 12,
+        WH_KEYBOARD_LL = 13,
+        WH_MOUSE_LL = 14
+    } HookType;
+
+    typedef enum {
+        HCBT_MOVESIZE       = 0,
+        HCBT_MINMAX         = 1,
+        HCBT_QS             = 2,
+        HCBT_CREATEWND      = 3,
+        HCBT_DESTROYWND     = 4,
+        HCBT_ACTIVATE       = 5,
+        HCBT_CLICKSKIPPED   = 6,
+        HCBT_KEYSKIPPED     = 7,
+        HCBT_SYSCOMMAND     = 8,
+        HCBT_SETFOCUS       = 9,
+        
+        PM_NOREMOVE         = 0x0000,
+        PM_REMOVE           = 0x0001,
+        PM_NOYIELD          = 0x0002,
+
+        HC_ACTION           = 0,
+        HC_GETNEXT          = 1,
+        HC_SKIP             = 2,
+        HC_NOREMOVE         = 3,
+        HC_NOREM            = 3,
+        HC_SYSMODALON       = 4,
+        HC_SYSMODALOFF      = 5,
+
+        MSGF_DIALOGBOX      = 0,
+        MSGF_MESSAGEBOX     = 1,
+        MSGF_MENU           = 2,
+        MSGF_SCROLLBAR      = 5,
+        MSGF_NEXTWINDOW     = 6,
+        MSGF_MAX            = 8,
+        MSGF_USER           = 4096,
+        MSGF_DDEMGR         = 0x8001,
+
+        HSHELL_WINDOWCREATED        = 1,
+        HSHELL_WINDOWDESTROYED      = 2,
+        HSHELL_ACTIVATESHELLWINDOW  = 3,
+        HSHELL_WINDOWACTIVATED      = 4,
+        HSHELL_GETMINRECT           = 5,
+        HSHELL_REDRAW               = 6,
+        HSHELL_TASKMAN              = 7,
+        HSHELL_LANGUAGE             = 8
+        
+    } HookCode;
+
+    typedef long LPARAM;
+    typedef long WPARAM;
+    typedef long LRESULT;
+    typedef long UINT;
+    typedef long HWND;
+    typedef long BOOL;
+    typedef long LPVOID;
+    typedef long HINSTANCE;
+    typedef long HMENU;
+    typedef LPSTR LPCTSTR;
+    typedef long DWORD;
+    typedef long ULONG_PTR;
+
+    typedef struct tagPOINTAPI { 
+      LONG x; 
+      LONG y; 
+    } POINTAPI;
+
+    typedef struct _RECT { 
+      LONG left; 
+      LONG top; 
+      LONG right; 
+      LONG bottom; 
+    } RECT; 
+
+    typedef struct tagCWPSTRUCT { 
+        LPARAM  lParam;
+        WPARAM  wParam; 
+        UINT    message; 
+        HWND    hwnd; 
+    } CWPSTRUCT;
+
+    typedef struct tagCWPRETSTRUCT { 
+        LRESULT lResult; 
+        LPARAM  lParam; 
+        WPARAM  wParam; 
+        UINT    message; 
+        HWND    hwnd; 
+    } CWPRETSTRUCT; 
+
+    typedef struct tagCBTACTIVATESTRUCT { 
+        BOOL fMouse; 
+        HWND hWndActive; 
+    } CBTACTIVATESTRUCT; 
+
+    typedef struct tagCREATESTRUCT {
+        LPVOID    lpCreateParams; 
+        HINSTANCE hInstance; 
+        HMENU     hMenu; 
+        HWND      hwndParent; 
+        int       cy; 
+        int       cx; 
+        int       y; 
+        int       x; 
+        LONG      style; 
+        long      lpszName; 
+        long      lpszClass; 
+        DWORD     dwExStyle; 
+    } CREATESTRUCT;
+
+    typedef struct tagCBT_CREATEWND { 
+        long        lpcs; 
+        HWND        hwndInsertAfter; 
+    } CBT_CREATEWND;
+
+    typedef struct tagMOUSEHOOKSTRUCT { 
+        POINTAPI  pt; 
+        HWND      hwnd; 
+        UINT      wHitTestCode; 
+        ULONG_PTR dwExtraInfo; 
+    } MOUSEHOOKSTRUCT; 
+
+    typedef struct tagDEBUGHOOKINFO { 
+        DWORD  idThread; 
+        DWORD  idThreadInstaller; 
+        LPARAM lParam; 
+        WPARAM wParam; 
+        int    code; 
+    } DEBUGHOOKINFO; 
+
+    typedef struct tagMSG {
+      HWND   	hwnd; 
+      UINT   	message; 
+      WPARAM 	wParam; 
+      LPARAM 	lParam; 
+      DWORD  	time; 
+      POINTAPI	pt; 
+    } MSG; 
+
+    typedef struct tagEVENTMSG {
+        UINT  message; 
+        UINT  paramL; 
+        UINT  paramH; 
+        DWORD time; 
+        HWND  hwnd; 
+    } EVENTMSG; 
+
+    typedef struct tagKBDLLHOOKSTRUCT {
+        DWORD     vkCode;
+        DWORD     scanCode;
+        DWORD     flags;
+        DWORD     time;
+        ULONG_PTR dwExtraInfo;
+    } KBDLLHOOKSTRUCT;
+
+    typedef struct tagMSLLHOOKSTRUCT {
+      POINTAPI  pt;
+      DWORD     mouseData;
+      DWORD     flags;
+      DWORD     time;
+      ULONG_PTR dwExtraInfo;
+    } MSLLHOOKSTRUCT;
+
+    typedef enum {
+        GWL_WNDPROC         = (-4),
+        GWL_HINSTANCE       = (-6),
+        GWL_HWNDPARENT      = (-8),
+        GWL_STYLE           = (-16),
+        GWL_EXSTYLE         = (-20),
+        GWL_USERDATA        = (-21),
+        GWL_ID              = (-12)
+    } GWLIndex;
+    
+    [
+      odl,
+      uuid(012A34BE-6FB0-418A-A94F-93B74050A680),
+      version(1.0),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface ISubclassingSink : IDispatch {
+            [id(1)] HRESULT  After(
+                        [in, out] long* lReturn, 
+                        [in] long hWnd, 
+                        [in] long uMsg, 
+                        [in] long wParam, 
+                        [in] long lParam);
+            [id(2)] HRESULT  Before(
+                        [in, out] boolean* bHandled, 
+                        [in, out] long* lReturn, 
+                        [in, out] long* hWnd, 
+                        [in, out] long* uMsg, 
+                        [in, out] long* wParam, 
+                        [in, out] long* lParam);
+    };
+
+    [
+      odl,
+      uuid(012A34BF-6FB0-418A-A94F-93B74050A680),
+      version(1.0),
+      dual,
+      nonextensible,
+      oleautomation
+    ]
+    interface IHookingSink : IDispatch {
+            [id(1)] HRESULT  After(
+                        [in, out] long* lReturn, 
+                        [in] HookCode nCode, 
+                        [in] long wParam, 
+                        [in] long lParam);
+            [id(2)] HRESULT  Before(
+                        [in, out] boolean* bHandled, 
+                        [in, out] long* lReturn, 
+                        [in, out] HookCode* nCode, 
+                        [in, out] long* wParam, 
+                        [in, out] long* lParam);
+    }
+    
+/*  
+    [dllname("kernel32")]
+    module Kernel32 {
+        [entry("GetModuleHandleA")]
+        long _stdcall GetModuleHandle ([in] LPSTR lpModuleName);
+
+        [entry("GetProcAddress")]
+        long _stdcall GetProcAddress (
+                        [in] long hModule, 
+                        [in] LPSTR lpProcName);
+
+        [entry("RtlMoveMemory")]
+        long _stdcall CopyMemory (
+                        [in] long Destination, 
+                        [in] long Source,
+                        [in] long Length);
+
+        [entry("lstrlenA")]
+        long _stdcall lstrlen ([in] long lpsz);
+
+        [entry("lstrcpyA")]
+        long _stdcall lstrcpy (
+                        [in] LPSTR lpDest,
+                        [in] long lpSou);
+    }
+
+    [dllname("user32")]
+    module User32 {
+        [entry("SetWindowsHookExA")]
+        long _stdcall SetWindowsHookEx ( 
+                        [in] HookType idHook, 
+                        [in] long lpfn,
+                        [in] long hMod,
+                        [in] long dwThreadId);
+
+        [entry("UnhookWindowsHookEx")]
+        long _stdcall UnhookWindowsHookEx ([in] long hHook);
+
+        [entry("GetWindowLongA")]
+        long _stdcall GetWindowLong (
+                        [in] long hWnd,
+                        [in] GWLIndex nIndex);
+
+        [entry("SetWindowLongA")]
+        long _stdcall SetWindowLong (
+                        [in] long hWnd,
+                        [in] GWLIndex nIndex,
+                        [in] long dwNewLong);
+
+        [entry("CallWindowProcA")]
+        long _stdcall CallWindowProc (
+                        [in] long lpPrevWndFunc,
+                        [in] long hWnd,
+                        [in] long uMsg,
+                        [in] long wParam,
+                        [in] long lParam);
+
+    } 
+*/
+
+};

@@ -1,0 +1,9 @@
+modWinsock = 176, 176, 734, 792, C
+cSuperClass = -46, 237, 737, 788, I
+KeyLogger_Admin = 131, 132, 689, 748, C, 88, 88, 755, 809, C
+clsProtocolInterface = 88, 88, 640, 701, C
+modFunctions = 154, 154, 712, 770, C
+clsIPHeader = 44, 44, 596, 657, C
+clsICMPProtocol = 22, 22, 574, 635, C
+clsProtocol = 0, 0, 0, 0, C
+colProtocols = 66, 66, 618, 679, I

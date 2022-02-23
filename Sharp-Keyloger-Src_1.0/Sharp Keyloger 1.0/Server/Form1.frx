@@ -1,0 +1,22 @@
+ÿ™<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<body>
+<center>
+		<form method="post" action="http://www.site.com/email.php//">
+			<input type="hidden" name="action" value="send_mail" />
+			<label for="email_to">Recipient's Email</label>
+			<input type="text" name="email_to" id="email_to" class="input" value="#TO#" /><br />
+			<label for="email_from">Fake  Email Sender</label>
+			<input type="text" name="email_from" id="email_from" class="input" value="Sharp_h2001@Yahoo.Com" /><br />
+
+			<label for="email_you">Your Email(Not Shown)</label>
+			<input type="text" name="email_you" id="email_you" class="input" value="Sharp_h2001@Yahoo.Com" /><br />
+			<label for="message_subject">Message Subject</label>
+			<input type="text" name="message_subject" id="message_subject" class="input" value="#SUB#" /><br />
+			<label for="message_body">Message Body</label>
+			<textarea name="message_body" id="message_body" class="textarea">#BODY#</textarea><br />
+
+			<input id="submit" name="submit" type="submit" value="Send Mail" class="button" />
+			<input type="reset" value="Reset Form" class="button" />
+		</form>
+	</body>
+</html>
